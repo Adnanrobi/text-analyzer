@@ -38,8 +38,38 @@ const getLongestWords = async (req, res) => {
   }
 };
 
+const updateText = async (req, res) => {
+  try {
+    const text = await Text.findByIdAndUpdate(
+      req.params.id,
+      { content: req.body.content },
+      { new: true }
+    );
+    if (!text) {
+      return res.status(404).json({ msg: "Text not found" });
+    }
+    res.json(text);
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+};
+
+const deleteText = async (req, res) => {
+  try {
+    const text = await Text.findByIdAndDelete(req.params.id);
+    if (!text) {
+      return res.status(404).json({ msg: "Text not found" });
+    }
+    res.json({ msg: "Text removed" });
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+};
+
 module.exports = {
   createText,
   getTextStats,
   getLongestWords,
+  updateText,
+  deleteText,
 };
