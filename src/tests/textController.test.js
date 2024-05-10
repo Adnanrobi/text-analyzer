@@ -35,13 +35,13 @@ describe("Text API", () => {
   it("should get text statistics", async () => {
     const res = await request(app).get(`/api/texts/${textId}/stats`);
     expect(res.statusCode).toEqual(200);
-    expect(res.body.wordCount).toEqual(9);
+    expect(res.body.wordCount).toEqual(9); // 9 words
   });
 
   it("should get longest words in paragraphs", async () => {
     const res = await request(app).get(`/api/texts/${textId}/longest-words`);
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual(["jumps"]);
+    expect(res.body).toEqual(["jumps"]); // 'jumps' is the longest word
   });
 
   it("should update the text", async () => {
