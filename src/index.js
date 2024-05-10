@@ -5,6 +5,7 @@ const rateLimit = require("express-rate-limit");
 const connectDB = require("./db");
 const textRoutes = require("./routes/textRoutes");
 const { cacheMiddleware } = require("./services/cache");
+const path = require("path");
 
 require("dotenv").config();
 
@@ -24,6 +25,8 @@ app.use(limiter);
 app.use(cacheMiddleware);
 
 app.use("/api/texts", textRoutes);
+
+app.use(express.static(path.join(__dirname, "..", "public")));
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
