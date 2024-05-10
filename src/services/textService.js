@@ -1,36 +1,51 @@
 const analyzeText = (text) => {
-  // Split text into paragraphs (considering newline characters)
+  // Normalize text: remove punctuation, convert to lower case.
+  const normalizedText = text
+    .toLowerCase()
+    .replace(/[^\w\s]/g, "")
+    .trim();
+
+  // Split text into words
+  const words = normalizedText.split(/\s+/).filter(Boolean);
+
+  // Split text into sentences
+  const sentences = text.split(/[.!?]+/).filter(Boolean);
+
+  // Split text into paragraphs
   const paragraphs = text.split(/\n+/).filter(Boolean);
 
-  // Initialize variables for statistics
-  let wordCount = 0;
-  let charCount = 0;
-  const sentences = text.split(/[.!?]/).filter(Boolean);
-  const longestWords = [];
+  // Count words
+  const wordCount = words.length;
 
-  // Process each paragraph
-  paragraphs.forEach(paragraph => {
-      // Remove punctuation and convert to lowercase
-      const cleanedParagraph = paragraph.replace(/[^\w\s]/g, '').toLowerCase();
-      
-      // Split paragraph into words
-      const words = cleanedParagraph.split(/\s+/).filter(Boolean);
-      
-      // Update word and character counts
-      wordCount += words.length;
-      charCount += words.join('').length;
+  // Count characters (excluding spaces and punctuation)
+  const charCount = normalizedText.replace(/\s+/g, "").length;
 
-      // Find longest word in the paragraph
-      const longestWord = words.reduce((longest, current) => current.length > longest.length ? current : longest, '');
-      longestWords.push(longestWord);
+  // Count sentences
+  const sentenceCount = sentences.length;
+
+  // Count paragraphs
+  const paragraphCount = paragraphs.length;
+
+  // Find the longest word in each paragraph
+  const longestWords = paragraphs.map((paragraph) => {
+    const wordsInParagraph = paragraph
+      .toLowerCase()
+      .replace(/[^\w\s]/g, "")
+      .split(/\s+/)
+      .filter(Boolean);
+    return wordsInParagraph.reduce(
+      (longest, current) =>
+        current.length > longest.length ? current : longest,
+      ""
+    );
   });
 
   return {
-      wordCount,
-      charCount,
-      sentenceCount: sentences.length,
-      paragraphCount: paragraphs.length,
-      longestWords,
+    wordCount,
+    charCount,
+    sentenceCount,
+    paragraphCount,
+    longestWords,
   };
 };
 
